@@ -3,14 +3,11 @@ require("./db/conn");
 const app =express();
 
 const PORT=5000;
-const Student =require ("./model/student")
+const Student =require ("./model/student");
 
 app.use(express.json());
 
-// create a new student registration API
-// app.get("/",(req,res)=>{
-//     res.send("hello from other side rashmi");
-// });
+// create a new student registration
 
 // Using promises.
 //  app.post("/students",(req,res)=>{
@@ -24,11 +21,11 @@ app.use(express.json());
 //     })
 
 
-    // res.send("hello from other side");
+//     res.send("hello from other side");
     
 // })
 
-// using async await
+// POST (create)using async await
 
 app.post("/students",async(req,res)=>{
 
@@ -68,6 +65,37 @@ app.get("/students/:id", async(req,res)=>{
         res.send(e);
     }
 })
+// Update Students
+app.patch("/students/:id", async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const updateStudent= await Student.findByIdAndUpdate(id,req.body,{
+            new:true  
+        });
+        if(!req.params.id){
+            return res.status(400).send();
+        }
+        res.send(updateStudent);
+    }catch(e){
+        res.status(500).send(e);
+    }
+})
+
+
+// Delete the students by id
+app.delete("/students/:id", async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const deleteStudent= await Student.findByIdAndDelete(id);
+        if(!req.params.id){
+            return res.status(400).send();
+        }
+        res.send(deleteStudent);
+    }catch(e){
+        res.status(500).send(e);
+    }
+})
+
 
 
 app.listen(PORT,()=>{

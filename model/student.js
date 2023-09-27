@@ -25,12 +25,11 @@ const studentSchema = new mongoose.Schema({
     },
     address:{
         type:String,
-        
-        required:true
+         required:true
     }
 })
 
-// we will create a new collection
+// we will create a new collection using model
 
 const Student = new mongoose.model('Student', studentSchema);
 
